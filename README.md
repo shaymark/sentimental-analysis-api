@@ -1,11 +1,11 @@
 # Sentiment Analysis API
 
-A FastAPI-based sentiment analysis service that uses TextBlob to analyze the sentiment of text input.
+A FastAPI-based sentiment analysis service that uses the DistilBERT model to analyze the sentiment of text input.
 
 ## Features
 
 - RESTful API for sentiment analysis
-- Uses TextBlob for lightweight, fast sentiment analysis
+- Uses Hugging Face Transformers with DistilBERT model
 - Returns sentiment label and confidence score
 - Deployed on Render
 
