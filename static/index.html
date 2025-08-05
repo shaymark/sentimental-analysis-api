@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sentiment Analysis Bot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f0f0f0;
+    }
+    #container {
+      max-width: 500px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      text-align: center;
+    }
+    #result {
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 5px;
+      background-color: #f8f8f8;
+    }
+    .positive {
+      color: green;
+    }
+    .negative {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="container">
+    <h2>Sentiment Analysis Bot</h2>
+    <textarea id="textInput" rows="5" placeholder="Enter text here..."></textarea><br><br>
+    <button onclick="getSentiment()">Analyze Sentiment</button>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    async function getSentiment() {
+      const text = document.getElementById('textInput').value;
+      const resultDiv = document.getElementById('result');
+      
+      if (!text) {
+        resultDiv.innerHTML = "<p>Please enter some text to analyze.</p>";
+        return;
+      }
+
+      resultDiv.innerHTML = "<p>Analyzing...</p>";
+
+      try {
+        const response = await fetch('/analyze-sentiment', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ text }),
+        });
+
+        const data = await response.json();
+
+        const sentiment = data.sentiment.label;
+        const sentimentScore = data.sentiment.score;
+        
+        if (sentiment === "POSITIVE") {
+          resultDiv.innerHTML = `<p class="positive">Sentiment: Positive (Score: ${sentimentScore})</p>`;
+        } else {
+          resultDiv.innerHTML = `<p class="negative">Sentiment: Negative (Score: ${sentimentScore})</p>`;
+        }
+      } catch (error) {
+        resultDiv.innerHTML = "<p>There was an error with the analysis. Please try again later.</p>";
+      }
+    }
+  </script>
+
+</body>
+</html>
